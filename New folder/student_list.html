@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}O'quvchilar | 11-B{% endblock %}
+
+{% block content %}
+<h1 class="text-6xl md:text-8xl text-center orbitron neon-cyan glitch mb-20">O'QUVCHILAR</h1>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
+    {% for student in students %}
+    <div class="bg-black/70 backdrop-blur-xl rounded-3xl overflow-hidden neon-border hover:neon-border-pink hover-glow transition group">
+        <div class="h-72 relative overflow-hidden">
+            {% if student.photo %}
+                <img src="{{ student.photo.url }}" class="w-full h-full object-cover group-hover:scale-110 transition">
+            {% else %}
+                <div class="w-full h-full bg-gradient-to-br from-cyan-600 to-purple-800 flex items-center justify-center text-9xl font-black">?</div>
+            {% endif %}
+        </div>
+        <div class="p-8 text-center">
+            <h2 class="text-3xl orbitron neon-pink mb-3">{{ student.full_name }}</h2>
+            <p class="text-2xl text-cyan-300 mb-6">{{ student.average_rating }} ★</p>
+            <a href="{% url 'student_detail' student.pk %}" 
+               class="block py-4 bg-gradient-to-r from-cyan-500 to-pink-600 text-black font-bold text-xl rounded-full hover:scale-110 transition">
+               PROFIL →
+            </a>
+        </div>
+    </div>
+    {% empty %}
+    <p class="col-span-full text-center text-4xl text-gray-500">Hozircha hech kim yo‘q...</p>
+    {% endfor %}
+</div>
+{% endblock %}

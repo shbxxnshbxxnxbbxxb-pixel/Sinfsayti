@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block title %}{{ student.full_name }} | PROFILE{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-12">
+
+    <!-- Profil kartasi -->
+    <div class="md:col-span-1">
+        <div class="bg-black/80 backdrop-blur-xl rounded-3xl p-10 text-center neon-border-pink sticky top-24">
+            <div class="w-80 h-80 mx-auto rounded-full overflow-hidden border-8 border-pink-600 mb-8">
+                {% if student.photo %}
+                    <img src="{{ student.photo.url }}" class="w-full h-full object-cover">
+                {% else %}
+                    <div class="bg-gradient-to-br from-pink-600 to-cyan-600 flex items-center justify-center text-9xl font-black">?</div>
+                {% endif %}
+            </div>
+            <h1 class="text-5xl orbitron neon-pink mb-4">{{ student.full_name }}</h1>
+            <p class="text-5xl text-cyan-300">{{ student.average_rating }} ★ <span class="text-xl">({{ student.rating_count }})</span></p>
+        </div>
+    </div>
+
+    <!-- Ma'lumotlar va sharhlar -->
+    <div class="md:col-span-2 space-y-12">
+        <!-- Bio -->
+        <div class="bg-black/70 backdrop-blur-xl rounded-3xl p-10 neon-border">
+            <h2 class="text-4xl orbitron neon-cyan mb-6">BIO//DATA</h2>
+            <p class="text-xl text-gray-300 leading-relaxed whitespace-pre-wrap">{{ student.biography }}</p>
+            {% if student.achievements %}
+            <h3 class="text-3xl orbitron neon-pink mt-10 mb-4">ACHIEVEMENTS</h3>
+            <p class="text-xl text-gray-300 whitespace-pre-wrap">{{ student.achievements }}</p>
+            {% endif %}
+        </div>
+
+        <!-- Sharh qoldirish -->
+        <div class="bg-black/70 backdrop-blur-xl rounded-3xl p-10 neon-border-pink">
+            <h2 class="text-4xl orbitron neon-pink mb-8">LEAVE FEEDBACK</h2>
+            <form method="post" class="space-y-8">
+                {% csrf_token %}
+                <div>{{ form.author_name }}</div>
+                <div>{{ form.text }}</div>
+                <div>{{ form.rating }}</div>
+                <button type="submit" class="w-full py-5 bg-gradient-to-r from-cyan-500 to-pink-600 text-black font-bold text-2xl rounded-2xl neon-border hover:scale-105 transition">
+                    YUBORISH →
+                </button>
+            </form>
+        </div>
+
+        <!-- Barcha sharhlar -->
+        <div class="bg-black/70 backdrop-blur-xl rounded-3xl p-10 neon-border">
+            <h2 class="text-4xl orbitron neon-cyan mb-8">ALL FEEDBACK ({{ comments.count }})</h2>
+            {% for comment in comments %}
+            <div class="border-b border-cyan-800/50 pb-8 mb-8 last:border-0">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-2xl text-pink-400 font-bold">{{ comment.author_name }}</span>
+                    <span class="text-4xl">
+                        {% for i in "12345"|make_list %}
+                            {% if forloop.counter <= comment.rating %}★{% else %}☆{% endif %}
+                        {% endfor %}
+                    </span>
+                </div>
+                <p class="text-xl text-gray-300">{{ comment.text }}</p>
+                <p class="text-sm text-gray-500 mt-3">{{ comment.created_at|date:"d M Y, H:i" }}</p>
+            </div>
+            {% empty %}
+            <p class="text-center text-2xl text-gray-500">Hali sharh yo‘q...</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

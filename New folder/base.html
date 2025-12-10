@@ -1,0 +1,132 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}11-B // NIGHT CITY CLASS{% endblock %}</title>
+
+    <!-- Tailwind + DaisyUI -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.7.3/dist/full.min.css" rel="stylesheet" />
+
+    <!-- Cyberpunk Fontlari -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@500;700&family=Tomorrow:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --neon-blue: #00f0ff;
+            --neon-yellow: #fcee09;
+            --neon-pink: #ff00de;
+            --dark-bg: #050a0e;
+            --darker-bg: #030708;
+        }
+
+        body {
+            background: var(--dark-bg);
+            color: var(--neon-blue);
+            font-family: 'Rajdhani', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .font-cyber { font-family: 'Tomorrow', 'Orbitron', sans-serif; }
+        .orbitron { font-family: 'Orbitron', sans-serif; }
+
+        /* NEON GLOW */
+        .glow-blue { text-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue), 0 0 40px var(--neon-blue); }
+        .glow-yellow { text-shadow: 0 0 10px var(--neon-yellow), 0 0 20px var(--neon-yellow), 0 0 40px var(--neon-yellow); }
+        .glow-pink { text-shadow: 0 0 10px var(--neon-pink), 0 0 20px var(--neon-pink), 0 0 40px var(--neon-pink); }
+
+        /* BORDER GLOW */
+        .border-glow-blue { box-shadow: 0 0 15px var(--neon-blue), inset 0 0 15px var(--neon-blue); }
+        .border-glow-yellow { box-shadow: 0 0 15px var(--neon-yellow), inset 0 0 15px var(--neon-yellow); }
+
+        /* GLITCH EFFECT */
+        .glitch {
+            animation: glitch 3s infinite;
+        }
+        @keyframes glitch {
+            0%,100% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%); }
+            10% { clip-path: polygon(0 0, 100% 0, 100% 45%, 0% 65%); }
+            20% { clip-path: polygon(0 30%, 100% 10%, 100% 100%, 0% 100%); }
+        }
+
+        /* SCANLINES */
+        .scanlines {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(transparent 50%, rgba(0, 240, 255, 0.05) 50%);
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 9999;
+            animation: scan 8s linear infinite;
+        }
+        @keyframes scan {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 100%; }
+        }
+
+        /* HOVER GLOW */
+        .hover-glow:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 240, 255, 0.5);
+            transition: all 0.4s ease;
+        }
+
+        /* BUTTON */
+        .cyber-btn {
+            background: var(--neon-yellow);
+            color: var(--dark-bg);
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+            text-transform: uppercase;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 0 20px var(--neon-yellow);
+            transition: all 0.4s ease;
+        }
+        .cyber-btn:hover {
+            background: var(--neon-blue);
+            color: white;
+            box-shadow: 0 0 30px var(--neon-blue), 0 0 60px var(--neon-blue);
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="relative">
+
+    <!-- Scanlines Overlay -->
+    <div class="scanlines"></div>
+
+    <!-- NAVIGATION -->
+    <nav class="bg-black/95 backdrop-blur-xl border-b-4 border-glow-blue sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center">
+            <a href="{% url 'home' %}" class="text-5xl orbitron glow-yellow glitch tracking-widest">11-B//CLASS</a>
+            <div class="space-x-12 text-xl font-bold">
+                <a href="{% url 'home' %}" class="hover:glow-blue transition">HOME</a>
+                <a href="{% url 'student_list' %}" class="hover:glow-blue transition">O'QUVCHILAR</a>
+                <a href="{% url 'weekly_leader' %}" class="hover:glow-pink transition">LIDER</a>
+                <a href="{% url 'admin:index' %}" class="hover:text-red-500 transition">ADMIN</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="container mx-auto px-6 py-16 min-h-screen">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="text-center py-12 border-t border-cyan-900/50">
+        <p class="text-cyan-400 text-sm">
+            © 2077 <span class="glow-yellow">11-B NIGHT CITY ACADEMY</span> | 
+            <span class="text-gray-500">System online. Neural link active.</span>
+        </p>
+    </footer>
+
+</body>
+</html>
